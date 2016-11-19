@@ -41,7 +41,7 @@ describe("TodoApp", function() {
 			addNewItem("Learn React");
 		});
 
-		fit('should add a new item in the list after pressing enter', function() {
+		it('should add a new item in the list after pressing enter', function() {
 			expect(todoItems.length).toEqual(1);
 		});
 

@@ -64,6 +64,21 @@ export default class TodoApp extends React.Component {
 		}
 	}
 
+	toggle(todoItem, index){
+		let isDone = ! todoItem.isDone;
+		this.state.todos[index].isDone = isDone;
+
+		this.setState({
+			todos: this.state.todos
+		})
+	}
+
+	delete(toBeDeleted){
+		this.setState({
+			todos: this.state.todos.filter((todo) => (todo != toBeDeleted))
+		})
+	}
+
 	render() {
 		return (
 			<div>
@@ -82,8 +97,11 @@ export default class TodoApp extends React.Component {
 
 						{/* 注意这里=>符号的用法：
 						  */
-							this.state.todos.map((todo) => {
-							return <TodoItem todo={todo} />
+							this.state.todos.map((todo, index) => {
+							return <TodoItem todo={todo} key={index}
+							onToggle={this.toggle.bind(this, todo, index)}
+							deleteToDo={this.delete.bind(this, todo)}
+							/>
 						})}
 						/* all the todo list items here */
 					</ul>
