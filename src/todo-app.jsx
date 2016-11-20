@@ -18,13 +18,24 @@ export default class TodoApp extends React.Component {
 
 		//this.db = new LocalDb('React-Todos')
 		this.state = {
-			todos: []
+			todos: [],
+			newToDo: ''
 
 			//先从数据库中加载上次缓存的todos，如果加载失败，则初始化为空[]
 			//todos: this.db.get("todo") || []
 		};
 	}
-	
+	handleChange(event){
+		let value = event.target.value;
+		this.setState({
+			newToDo:{
+				title: value,
+				isDone: false
+			}
+			
+		})
+		
+	}
 	addTodo(todoItem) {
 		this.state.todos.push(todoItem);
 
@@ -43,24 +54,17 @@ export default class TodoApp extends React.Component {
 
 			//从event.target.value中获取输入框中的值
 			//这里当然也可以通过refs的方式获取，具体二者有什么区别：不清楚。。。。
-			let value = event.target.value;
-			if(!value) return false;
-
-			//如果输入框不为空，则新建一个todo
-			let newTodoItem = {
-				//新建的todo：
-				//内容是用户输入的内容，字段命名为title
-				//isDone表示默认状态是完成还是未完成的todo
-				
-				title: value,
-				isDone: false
-			};
+			if(! this.state.newToDo.title) 
+			return false;
 			//清空输入框，等待下一次输入
 			event.target.value = "";
 
 			//调用addTodo函数，把新的todo增加到this.state.todos中去
 			//并调用this.setState，触发react的render函数，进行重新加载组件
-			this.addTodo(newTodoItem);
+			this.addTodo(this.state.newToDo);
+			// this.setState({
+			// 	newToDo: ''
+			// })
 		}
 	}
 
@@ -87,7 +91,8 @@ export default class TodoApp extends React.Component {
 					<input className="new-todo" 
 						   onKeyDown={this.handleKeyDown.bind(this)}
 						   placeholder="What needs to be done?" 
-						   autoFocus={true} />
+						   autoFocus={true} 
+						   onChange={this.handleChange.bind(this)}/>
 				</header>
 
 				<section className="main">
